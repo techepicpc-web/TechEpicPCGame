@@ -1,0 +1,3013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechEpic PC</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg: #121214;
+            --card-bg: #202024;
+            --text: #e1e1e6;
+            --text-sub: #a8a8b3;
+            --accent-green: #00b37e;
+            --accent-blue: #0088cc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+        header {
+            max-width: 1200px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            border-bottom: 1px solid #323238;
+            padding-bottom: 15px;
+        }
+        .brand-container { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 15px; 
+            max-width: 800px;
+        }
+        .custom-logo {
+            width: 70px; height: 70px; border-radius: 8px; flex-shrink: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxyZWN0IHg9IjUiIHk9IjUiIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjQ4IiBmb250LWZhbWlseT0iJ1NlZ29lIFVJJywgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjQyIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UPC90ZXh0PgogICAgICA8dGV4dCB4PSI1MCIgeT0iNzUiIGZvbnQtZmFtaWx5PSInU2Vnb2UgVUknLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzAwMDAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VGVjaEVwaWM8L3RleHQ+CiAgICA8L3N2Zz4=');
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            background-color: #fff;
+        }
+        .store-details { display: flex; flex-direction: column; gap: 4px; }
+        h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: #fff; }
+        .subtitle { font-size: 0.95rem; font-weight: 600; color: var(--accent-green); margin-bottom: 4px; }
+        .info-line { font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; }
+        .info-line a { color: var(--accent-green); text-decoration: none; font-weight: 600; }
+        .info-line a:hover { text-decoration: underline; }
+        
+        .links-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+        .tg-link {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: #1c242d; color: var(--accent-blue) !important;
+            padding: 4px 10px; border-radius: 6px; font-size: 0.8rem !important; border: 1px solid #2b394a;
+        }
+        .tg-link:hover { background: #253240; text-decoration: none !important; }
+
+        .search-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-start;
+        }
+        .search-box {
+            padding: 10px 16px; width: 280px; border-radius: 8px;
+            border: 1px solid #323238; background-color: #121214; color: var(--text); font-size: 0.95rem; outline: none;
+        }
+        .search-box:focus { border-color: var(--accent-green); }
+        
+        .stock-notice {
+            font-size: 0.82rem;
+            color: var(--accent-green);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .category-nav {
+            max-width: 1200px; margin: 0 auto 20px auto; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px;
+        }
+        .tab-btn {
+            background: #202024; color: #a8a8b3; border: 1px solid #323238;
+            padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s;
+        }
+        .tab-btn.active, .tab-btn:hover { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px; max-width: 1200px; margin: 0 auto;
+        }
+        .card {
+            background-color: var(--card-bg); border-radius: 10px; overflow: hidden;
+            display: flex; flex-direction: column; position: relative; cursor: pointer; border: 2px solid transparent;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .card:hover { transform: translateY(-3px); }
+        .card.selected { border-color: var(--accent-green); box-shadow: 0 0 12px rgba(0, 179, 126, 0.4); }
+        
+        .cover-wrapper { width: 100%; aspect-ratio: 1/1; overflow: hidden; background-color: #29292e; }
+        .cover-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .info-panel { 
+            padding: 12px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; 
+        }
+        .title { 
+            font-size: 0.9rem; font-weight: 600; line-height: 1.3; color: var(--text);
+            word-break: break-word; white-space: normal; flex-grow: 1; 
+        }
+        .card-checkbox {
+            width: 20px; height: 20px; accent-color: var(--accent-green); cursor: pointer; flex-shrink: 0; margin-top: 2px;
+        }
+        
+        .selection-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; background-color: #18181b;
+            border-top: 1px solid #323238; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        }
+        .selection-info { font-size: 0.95rem; font-weight: 600; }
+        .send-btn {
+            background-color: var(--accent-green); color: #fff; border: none;
+            padding: 10px 18px; border-radius: 6px; font-weight: bold; font-size: 0.95rem; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand-container">
+            <div class="custom-logo"></div>
+            <div class="store-details">
+                <h1>TechEpic PC</h1>
+                <div class="subtitle">PC Games, Handheld, Consoles, &amp; Accessories</div>
+                <div class="info-line">📞 <b>Phone:</b> <a href="tel:086350825">086 350 825</a> | ⏰ <b>Working Hours:</b> 10AM to 5PM</div>
+                <div class="info-line">📍 <b>Location:</b> កែងផ្លូវ 261 និង 202, សង្កាត់ទឹកល្អក់3 ជិតសំណង់ 12</div>
+                <div class="info-line">🗺️ <b>Google Map:</b> <a href="https://maps.app.goo.gl/poEQvyNoLvEuRxiS9" target="_blank">Open Map Location</a></div>
+                <div class="links-group">
+                    <a href="https://t.me/techepicpc" target="_blank" class="tg-link">💬 Join Telegram Group</a>
+                    <a href="https://t.me/TechEpicAdmin" target="_blank" class="tg-link">👤 Chat with Admin</a>
+                </div>
+            </div>
+        </div>
+        <div class="search-wrapper">
+            <input type="text" id="search" class="search-box" placeholder="Search posters..." onkeyup="filterPosters()">
+            <div class="stock-notice">
+                _ សូមជួយឆែកស្តុកតាម Telegram!! 😘😘<br>
+                _ Please Help Check Stock By Telegram!! 😘😘
+            </div>
+        </div>
+    </header>
+
+    <div class="category-nav" id="categoryNav">
+        <button class="tab-btn active" onclick="filterCategory('ALL', this)">All</button>
+        <button class="tab-btn" onclick="filterCategory('Cables', this)">Cables</button>
+        <button class="tab-btn" onclick="filterCategory('Capture Card', this)">Capture Card</button>
+        <button class="tab-btn" onclick="filterCategory('Controller', this)">Controller</button>
+        <button class="tab-btn" onclick="filterCategory('Handheld Docking', this)">Handheld Docking</button>
+        <button class="tab-btn" onclick="filterCategory('Headset', this)">Headset</button>
+        <button class="tab-btn" onclick="filterCategory('Headset Stand', this)">Headset Stand</button>
+        <button class="tab-btn" onclick="filterCategory('Hub & Converter', this)">Hub & Converter</button>
+        <button class="tab-btn" onclick="filterCategory('Keyboards', this)">Keyboards</button>
+        <button class="tab-btn" onclick="filterCategory('Laptop Stand Cooler', this)">Laptop Stand Cooler</button>
+        <button class="tab-btn" onclick="filterCategory('M2 Enclosure', this)">M2 Enclosure</button>
+        <button class="tab-btn" onclick="filterCategory('Microphone', this)">Microphone</button>
+        <button class="tab-btn" onclick="filterCategory('Monitor Mount', this)">Monitor Mount</button>
+        <button class="tab-btn" onclick="filterCategory('Mouse', this)">Mouse</button>
+        <button class="tab-btn" onclick="filterCategory('Mousepad', this)">Mousepad</button>
+        <button class="tab-btn" onclick="filterCategory('Portable Monitor', this)">Portable Monitor</button>
+        <button class="tab-btn" onclick="filterCategory('Powerbank', this)">Powerbank</button>
+        <button class="tab-btn" onclick="filterCategory('Rog Ally X Accessories', this)">Rog Ally X Accessories</button>
+        <button class="tab-btn" onclick="filterCategory('Steam Deck Accessories', this)">Steam Deck Accessories</button>
+        <button class="tab-btn" onclick="filterCategory('Switch 2 Accessories', this)">Switch 2 Accessories</button>
+        <button class="tab-btn" onclick="filterCategory('Usb A C Charger', this)">Usb A C Charger</button>
+        <button class="tab-btn" onclick="filterCategory('Usb Wifi + Bluetooth', this)">Usb Wifi + Bluetooth</button>
+        <button class="tab-btn" onclick="filterCategory('Webcam', this)">Webcam</button>
+    </div>
+
+    <div class="grid" id="posterGrid">
+
+        <div class="card" data-title="ugreen 11150" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_1.jpg" alt="Ugreen 11150" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 11150">Ugreen 11150</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 11150" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 15774 dp to hdmi 2m" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_2.jpg" alt="Ugreen 15774 Dp To Hdmi 2M" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 15774 Dp To Hdmi 2M">Ugreen 15774 Dp To Hdmi 2M</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 15774 Dp To Hdmi 2M" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20884" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_3.jpg" alt="Ugreen 20884" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20884">Ugreen 20884</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20884" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25158" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_4.jpg" alt="Ugreen 25158" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25158">Ugreen 25158</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25158" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 30205" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_5.jpg" alt="Ugreen 30205" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 30205">Ugreen 30205</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 30205" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50570" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_6.jpg" alt="Ugreen 50570" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50570">Ugreen 50570</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50570" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60760" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_7.jpg" alt="Ugreen 60760" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60760">Ugreen 60760</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60760" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60820 (3m)" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_8.jpg" alt="Ugreen 60820 (3M)" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60820 (3M)">Ugreen 60820 (3M)</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60820 (3M)" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60820" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_9.jpg" alt="Ugreen 60820" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60820">Ugreen 60820</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60820" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 70336" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_10.jpg" alt="Ugreen 70336" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 70336">Ugreen 70336</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 70336" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 70444" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_11.jpg" alt="Ugreen 70444" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 70444">Ugreen 70444</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 70444" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 80150" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_12.jpg" alt="Ugreen 80150" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 80150">Ugreen 80150</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 80150" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 80372 100w 2m" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_13.jpg" alt="Ugreen 80372 100W 2M" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 80372 100W 2M">Ugreen 80372 100W 2M</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 80372 100W 2M" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 80392" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_14.jpg" alt="Ugreen 80392" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 80392">Ugreen 80392</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 80392" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 80402" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_15.jpg" alt="Ugreen 80402" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 80402">Ugreen 80402</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 80402" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90440 240w 2m" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_16.jpg" alt="Ugreen 90440 240W 2M" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90440 240W 2M">Ugreen 90440 240W 2M</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90440 240W 2M" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen flat cat7" data-category="Cables" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_17.jpg" alt="Ugreen Flat Cat7" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Flat Cat7">Ugreen Flat Cat7</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Flat Cat7" data-cat="Cables" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hagibis capture card" data-category="Capture Card" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_18.jpg" alt="Hagibis Capture Card" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hagibis Capture Card">Hagibis Capture Card</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hagibis Capture Card" data-cat="Capture Card" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="8bitdo pro 3" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_19.jpg" alt="8Bitdo Pro 3" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="8Bitdo Pro 3">8Bitdo Pro 3</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="8Bitdo Pro 3" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="8bitdo ultimate 2 switch" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_20.jpg" alt="8Bitdo Ultimate 2 Switch" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="8Bitdo Ultimate 2 Switch">8Bitdo Ultimate 2 Switch</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="8Bitdo Ultimate 2 Switch" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="8bitdo ultimate 2" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_21.jpg" alt="8Bitdo Ultimate 2" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="8Bitdo Ultimate 2">8Bitdo Ultimate 2</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="8Bitdo Ultimate 2" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="8bitdo ultimate 2c wk" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_22.jpg" alt="8Bitdo Ultimate 2C Wk" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="8Bitdo Ultimate 2C Wk">8Bitdo Ultimate 2C Wk</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="8Bitdo Ultimate 2C Wk" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="8bitdo ultimate c bw" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_23.jpg" alt="8Bitdo Ultimate C Bw" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="8Bitdo Ultimate C Bw">8Bitdo Ultimate C Bw</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="8Bitdo Ultimate C Bw" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="8bitdo ultimate hall" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_24.jpg" alt="8Bitdo Ultimate Hall" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="8Bitdo Ultimate Hall">8Bitdo Ultimate Hall</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="8Bitdo Ultimate Hall" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="9228 ipega" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_25.jpg" alt="9228 Ipega" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="9228 Ipega">9228 Ipega</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="9228 Ipega" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="anbernic rg p01" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_26.jpg" alt="Anbernic Rg P01" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Anbernic Rg P01">Anbernic Rg P01</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Anbernic Rg P01" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="bsp d10s" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_27.jpg" alt="Bsp D10S" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Bsp D10S">Bsp D10S</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Bsp D10S" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wgp13s" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_28.jpg" alt="Fantech Wgp13S" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wgp13S">Fantech Wgp13S</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wgp13S" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="g6 bluetooth" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_29.jpg" alt="G6 Bluetooth" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="G6 Bluetooth">G6 Bluetooth</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="G6 Bluetooth" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="gamesir g8+" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_30.jpg" alt="Gamesir G8+" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Gamesir G8+">Gamesir G8+</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Gamesir G8+" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="gamesir nova 2 lite + dock" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_31.jpg" alt="Gamesir Nova 2 Lite + Dock" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Gamesir Nova 2 Lite + Dock">Gamesir Nova 2 Lite + Dock</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Gamesir Nova 2 Lite + Dock" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="gamesir nova 2 lite" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_32.jpg" alt="Gamesir Nova 2 Lite" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Gamesir Nova 2 Lite">Gamesir Nova 2 Lite</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Gamesir Nova 2 Lite" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="gamesir x5 lite" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_33.jpg" alt="Gamesir X5 Lite" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Gamesir X5 Lite">Gamesir X5 Lite</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Gamesir X5 Lite" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="gamesir x5s" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_34.jpg" alt="Gamesir X5S" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Gamesir X5S">Gamesir X5S</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Gamesir X5S" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="iine mini retro  ananke" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_35.jpg" alt="Iine Mini Retro  Ananke" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Iine Mini Retro  Ananke">Iine Mini Retro  Ananke</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Iine Mini Retro  Ananke" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="iine mini retro pocket" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_36.jpg" alt="Iine Mini Retro Pocket" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Iine Mini Retro Pocket">Iine Mini Retro Pocket</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Iine Mini Retro Pocket" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ipega 9211" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_37.jpg" alt="Ipega 9211" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ipega 9211">Ipega 9211</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ipega 9211" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo gt 96" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_38.jpg" alt="Marvo Gt 96" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Gt 96">Marvo Gt 96</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Gt 96" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mobapad m12 s" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_39.jpg" alt="Mobapad M12 S" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mobapad M12 S">Mobapad M12 S</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mobapad M12 S" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="msi gc300" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_40.jpg" alt="Msi Gc300" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Msi Gc300">Msi Gc300</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Msi Gc300" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nyxi switch 2" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_41.jpg" alt="Nyxi Switch 2" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nyxi Switch 2">Nyxi Switch 2</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nyxi Switch 2" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="xbox elite series 2" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_42.jpg" alt="Xbox Elite Series 2" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Xbox Elite Series 2">Xbox Elite Series 2</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Xbox Elite Series 2" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="xbox series x black white" data-category="Controller" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_43.jpg" alt="Xbox Series X Black White" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Xbox Series X Black White">Xbox Series X Black White</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Xbox Series X Black White" data-cat="Controller" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hagibis handheld dock" data-category="Handheld Docking" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_44.jpg" alt="Hagibis Handheld Dock" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hagibis Handheld Dock">Hagibis Handheld Dock</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hagibis Handheld Dock" data-cat="Handheld Docking" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="jsaux 6 in 1 docking station" data-category="Handheld Docking" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_45.jpg" alt="Jsaux 6 In 1 Docking Station" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Jsaux 6 In 1 Docking Station">Jsaux 6 In 1 Docking Station</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Jsaux 6 In 1 Docking Station" data-cat="Handheld Docking" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="rog charger dock" data-category="Handheld Docking" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_46.jpg" alt="Rog Charger Dock" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Rog Charger Dock">Rog Charger Dock</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Rog Charger Dock" data-cat="Handheld Docking" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech hg28 7.1" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_47.jpg" alt="Fantech Hg28 7.1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Hg28 7.1">Fantech Hg28 7.1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Hg28 7.1" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech hg30 7.1" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_48.jpg" alt="Fantech Hg30 7.1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Hg30 7.1">Fantech Hg30 7.1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Hg30 7.1" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mh88" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_49.jpg" alt="Fantech Mh88" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mh88">Fantech Mh88</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mh88" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mh90" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_50.jpg" alt="Fantech Mh90" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mh90">Fantech Mh90</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mh90" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wave10 wireless" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_51.jpg" alt="Fantech Wave10 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wave10 Wireless">Fantech Wave10 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wave10 Wireless" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wave12 wireless" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_52.jpg" alt="Fantech Wave12 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wave12 Wireless">Fantech Wave12 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wave12 Wireless" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech whg01" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_53.jpg" alt="Fantech Whg01" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Whg01">Fantech Whg01</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Whg01" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech whg05" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_54.jpg" alt="Fantech Whg05" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Whg05">Fantech Whg05</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Whg05" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hg16s" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_55.jpg" alt="Hg16S" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hg16S">Hg16S</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hg16S" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hq53" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_56.jpg" alt="Hq53" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hq53">Hq53</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hq53" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo h9086 7.1" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_57.jpg" alt="Marvo H9086 7.1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo H9086 7.1">Marvo H9086 7.1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo H9086 7.1" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo hg9086w" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_58.jpg" alt="Marvo Hg9086W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Hg9086W">Marvo Hg9086W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Hg9086W" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mh86 mint" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_59.jpg" alt="Mh86 Mint" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mh86 Mint">Mh86 Mint</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mh86 Mint" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon h320 rgb" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_60.jpg" alt="Reddragon H320 Rgb" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon H320 Rgb">Reddragon H320 Rgb</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon H320 Rgb" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon h350" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_61.jpg" alt="Reddragon H350" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon H350">Reddragon H350</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon H350" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen ep106 usb c" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_62.jpg" alt="Ugreen Ep106 Usb C" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Ep106 Usb C">Ugreen Ep106 Usb C</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Ep106 Usb C" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen ep106" data-category="Headset" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_63.jpg" alt="Ugreen Ep106" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Ep106">Ugreen Ep106</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Ep106" data-cat="Headset" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ac3001" data-category="Headset Stand" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_64.jpg" alt="Ac3001" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ac3001">Ac3001</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ac3001" data-cat="Headset Stand" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ac3001s" data-category="Headset Stand" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_65.jpg" alt="Ac3001S" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ac3001S">Ac3001S</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ac3001S" data-cat="Headset Stand" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ac3004 mint" data-category="Headset Stand" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_66.jpg" alt="Ac3004 Mint" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ac3004 Mint">Ac3004 Mint</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ac3004 Mint" data-cat="Headset Stand" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech ac304 pro" data-category="Headset Stand" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_67.jpg" alt="Fantech Ac304 Pro" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Ac304 Pro">Fantech Ac304 Pro</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Ac304 Pro" data-cat="Headset Stand" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech ac304" data-category="Headset Stand" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_68.jpg" alt="Fantech Ac304" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Ac304">Fantech Ac304</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Ac304" data-cat="Headset Stand" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech ac304" data-category="Headset Stand" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_69.jpg" alt="Fantech Ac304" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Ac304">Fantech Ac304</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Ac304" data-cat="Headset Stand" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="lenovo usb c dock" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_70.jpg" alt="Lenovo Usb C Dock" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Lenovo Usb C Dock">Lenovo Usb C Dock</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Lenovo Usb C Dock" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 10919" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_71.jpg" alt="Ugreen 10919" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 10919">Ugreen 10919</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 10919" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 10927" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_72.jpg" alt="Ugreen 10927" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 10927">Ugreen 10927</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 10927" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 15214" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_73.jpg" alt="Ugreen 15214" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 15214">Ugreen 15214</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 15214" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 15495" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_74.jpg" alt="Ugreen 15495" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 15495">Ugreen 15495</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 15495" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 15852 dual hdmi" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_75.jpg" alt="Ugreen 15852 Dual Hdmi" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 15852 Dual Hdmi">Ugreen 15852 Dual Hdmi</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 15852 Dual Hdmi" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20107" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_76.jpg" alt="Ugreen 20107" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20107">Ugreen 20107</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20107" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20250" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_77.jpg" alt="Ugreen 20250" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20250">Ugreen 20250</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20250" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20256" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_78.jpg" alt="Ugreen 20256" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20256">Ugreen 20256</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20256" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20415" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_79.jpg" alt="Ugreen 20415" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20415">Ugreen 20415</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20415" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20636" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_80.jpg" alt="Ugreen 20636" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20636">Ugreen 20636</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20636" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20808" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_81.jpg" alt="Ugreen 20808" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20808">Ugreen 20808</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20808" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 20934" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_82.jpg" alt="Ugreen 20934" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 20934">Ugreen 20934</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 20934" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25851" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_83.jpg" alt="Ugreen 25851" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25851">Ugreen 25851</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25851" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 30333" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_84.jpg" alt="Ugreen 30333" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 30333">Ugreen 30333</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 30333" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 30620" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_85.jpg" alt="Ugreen 30620" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 30620">Ugreen 30620</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 30620" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 30759" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_86.jpg" alt="Ugreen 30759" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 30759">Ugreen 30759</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 30759" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 30843" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_87.jpg" alt="Ugreen 30843" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 30843">Ugreen 30843</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 30843" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 35584 usb c hub" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_88.jpg" alt="Ugreen 35584 Usb C Hub" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 35584 Usb C Hub">Ugreen 35584 Usb C Hub</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 35584 Usb C Hub" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 35590" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_89.jpg" alt="Ugreen 35590" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 35590">Ugreen 35590</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 35590" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 35598" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_90.jpg" alt="Ugreen 35598" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 35598">Ugreen 35598</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 35598" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 40363" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_91.jpg" alt="Ugreen 40363" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 40363">Ugreen 40363</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 40363" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 40372" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_92.jpg" alt="Ugreen 40372" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 40372">Ugreen 40372</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 40372" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 40964" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_93.jpg" alt="Ugreen 40964" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 40964">Ugreen 40964</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 40964" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 45320" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_94.jpg" alt="Ugreen 45320" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 45320">Ugreen 45320</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 45320" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50209" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_95.jpg" alt="Ugreen 50209" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50209">Ugreen 50209</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50209" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50307" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_96.jpg" alt="Ugreen 50307" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50307">Ugreen 50307</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50307" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50533" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_97.jpg" alt="Ugreen 50533" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50533">Ugreen 50533</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50533" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50568" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_98.jpg" alt="Ugreen 50568" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50568">Ugreen 50568</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50568" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50596" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_99.jpg" alt="Ugreen 50596" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50596">Ugreen 50596</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50596" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50857" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_100.jpg" alt="Ugreen 50857" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50857">Ugreen 50857</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50857" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 50966" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_101.jpg" alt="Ugreen 50966" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 50966">Ugreen 50966</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 50966" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60164" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_102.jpg" alt="Ugreen 60164" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60164">Ugreen 60164</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60164" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60165" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_103.jpg" alt="Ugreen 60165" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60165">Ugreen 60165</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60165" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60384" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_104.jpg" alt="Ugreen 60384" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60384">Ugreen 60384</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60384" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 70451" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_105.jpg" alt="Ugreen 70451" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 70451">Ugreen 70451</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 70451" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 70601" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_106.jpg" alt="Ugreen 70601" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 70601">Ugreen 70601</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 70601" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 70609" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_107.jpg" alt="Ugreen 70609" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 70609">Ugreen 70609</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 70609" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 80154" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_108.jpg" alt="Ugreen 80154" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 80154">Ugreen 80154</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 80154" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 80191" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_109.jpg" alt="Ugreen 80191" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 80191">Ugreen 80191</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 80191" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90305" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_110.jpg" alt="Ugreen 90305" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90305">Ugreen 90305</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90305" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90568" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_111.jpg" alt="Ugreen 90568" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90568">Ugreen 90568</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90568" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ult 5 in 1" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_112.jpg" alt="Ult 5 In 1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ult 5 In 1">Ult 5 In 1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ult 5 In 1" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ult 6 in 1" data-category="Hub & Converter" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_113.jpg" alt="Ult 6 In 1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ult 6 In 1">Ult 6 In 1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ult 6 In 1" data-cat="Hub & Converter" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="aula mini60he" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_114.jpg" alt="Aula Mini60He" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Aula Mini60He">Aula Mini60He</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Aula Mini60He" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech k515 shikari" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_115.jpg" alt="Fantech K515 Shikari" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech K515 Shikari">Fantech K515 Shikari</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech K515 Shikari" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech k614l" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_116.jpg" alt="Fantech K614L" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech K614L">Fantech K614L</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech K614L" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech maxfit 67" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_117.jpg" alt="Fantech Maxfit 67" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Maxfit 67">Fantech Maxfit 67</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Maxfit 67" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech maxfit108 rgb white" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_118.jpg" alt="Fantech Maxfit108 Rgb White" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Maxfit108 Rgb White">Fantech Maxfit108 Rgb White</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Maxfit108 Rgb White" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech maxfit61 wireless" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_119.jpg" alt="Fantech Maxfit61 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Maxfit61 Wireless">Fantech Maxfit61 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Maxfit61 Wireless" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech maxfit61" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_120.jpg" alt="Fantech Maxfit61" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Maxfit61">Fantech Maxfit61</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Maxfit61" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk855 maxfit108" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_121.jpg" alt="Fantech Mk855 Maxfit108" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk855 Maxfit108">Fantech Mk855 Maxfit108</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk855 Maxfit108" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk875 mizu 2 colors" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_122.jpg" alt="Fantech Mk875 Mizu 2 Colors" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk875 Mizu 2 Colors">Fantech Mk875 Mizu 2 Colors</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk875 Mizu 2 Colors" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk875 v2 mizu" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_123.jpg" alt="Fantech Mk875 V2 Mizu" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk875 V2 Mizu">Fantech Mk875 V2 Mizu</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk875 V2 Mizu" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk886" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_124.jpg" alt="Fantech Mk886" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk886">Fantech Mk886</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk886" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk890 sky blue" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_125.jpg" alt="Fantech Mk890 Sky Blue" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk890 Sky Blue">Fantech Mk890 Sky Blue</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk890 Sky Blue" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk890 v2 mizu" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_126.jpg" alt="Fantech Mk890 V2 Mizu" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk890 V2 Mizu">Fantech Mk890 V2 Mizu</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk890 V2 Mizu" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk890" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_127.jpg" alt="Fantech Mk890" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk890">Fantech Mk890</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk890" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mk913 pro" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_128.jpg" alt="Fantech Mk913 Pro" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mk913 Pro">Fantech Mk913 Pro</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mk913 Pro" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech p31 hero" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_129.jpg" alt="Fantech P31 Hero" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech P31 Hero">Fantech P31 Hero</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech P31 Hero" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wk898" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_130.jpg" alt="Fantech Wk898" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wk898">Fantech Wk898</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wk898" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wk899" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_131.jpg" alt="Fantech Wk899" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wk899">Fantech Wk899</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wk899" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo c068" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_132.jpg" alt="Marvo C068" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo C068">Marvo C068</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo C068" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo dcm004 wireless" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_133.jpg" alt="Marvo Dcm004 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Dcm004 Wireless">Marvo Dcm004 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Dcm004 Wireless" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo kg880 pro" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_134.jpg" alt="Marvo Kg880 Pro" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Kg880 Pro">Marvo Kg880 Pro</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Kg880 Pro" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo kg934" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_135.jpg" alt="Marvo Kg934" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Kg934">Marvo Kg934</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Kg934" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo kg953" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_136.jpg" alt="Marvo Kg953" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Kg953">Marvo Kg953</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Kg953" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo kg980b" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_137.jpg" alt="Marvo Kg980B" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Kg980B">Marvo Kg980B</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Kg980B" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo km409" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_138.jpg" alt="Marvo Km409" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Km409">Marvo Km409</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Km409" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo wk004 wireless" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_139.jpg" alt="Marvo Wk004 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Wk004 Wireless">Marvo Wk004 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Wk004 Wireless" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo ws009 wireless" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_140.jpg" alt="Marvo Ws009 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Ws009 Wireless">Marvo Ws009 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Ws009 Wireless" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="razer ornata v3 chroma" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_141.jpg" alt="Razer Ornata V3 Chroma" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Razer Ornata V3 Chroma">Razer Ornata V3 Chroma</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Razer Ornata V3 Chroma" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon k512 white" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_142.jpg" alt="Reddragon K512 White" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon K512 White">Reddragon K512 White</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon K512 White" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon k552 kr" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_143.jpg" alt="Reddragon K552 Kr" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon K552 Kr">Reddragon K552 Kr</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon K552 Kr" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon k585" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_144.jpg" alt="Reddragon K585" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon K585">Reddragon K585</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon K585" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon k616 white pink" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_145.jpg" alt="Reddragon K616 White Pink" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon K616 White Pink">Reddragon K616 White Pink</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon K616 White Pink" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon k617 pink" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_146.jpg" alt="Reddragon K617 Pink" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon K617 Pink">Reddragon K617 Pink</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon K617 Pink" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon ks82 bw" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_147.jpg" alt="Reddragon Ks82 Bw" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon Ks82 Bw">Reddragon Ks82 Bw</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon Ks82 Bw" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m61 se b w" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_148.jpg" alt="Reddragon M61 Se B W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M61 Se B W">Reddragon M61 Se B W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M61 Se B W" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon ts68 wireless" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_149.jpg" alt="Reddragon Ts68 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon Ts68 Wireless">Reddragon Ts68 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon Ts68 Wireless" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon ts68 b" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_150.jpg" alt="Reddragon Ts68 B" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon Ts68 B">Reddragon Ts68 B</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon Ts68 B" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="rk r65" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_151.jpg" alt="Rk R65" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Rk R65">Rk R65</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Rk R65" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="rk r75" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_152.jpg" alt="Rk R75" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Rk R75">Rk R75</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Rk R75" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 15659" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_153.jpg" alt="Ugreen 15659" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 15659">Ugreen 15659</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 15659" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25322 key mouse combo" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_154.jpg" alt="Ugreen 25322 Key Mouse Combo" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25322 Key Mouse Combo">Ugreen 25322 Key Mouse Combo</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25322 Key Mouse Combo" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90250" data-category="Keyboards" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_155.jpg" alt="Ugreen 90250" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90250">Ugreen 90250</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90250" data-cat="Keyboards" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech nc13" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_156.jpg" alt="Fantech Nc13" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Nc13">Fantech Nc13</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Nc13" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech nc20" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_157.jpg" alt="Fantech Nc20" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Nc20">Fantech Nc20</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Nc20" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech ns10" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_158.jpg" alt="Fantech Ns10" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Ns10">Fantech Ns10</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Ns10" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fn 40" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_159.jpg" alt="Fn 40" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fn 40">Fn 40</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fn 40" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo fn41" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_160.jpg" alt="Marvo Fn41" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Fn41">Marvo Fn41</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Fn41" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon gcp115" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_161.jpg" alt="Reddragon Gcp115" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon Gcp115">Reddragon Gcp115</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon Gcp115" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 40291" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_162.jpg" alt="Ugreen 40291" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 40291">Ugreen 40291</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 40291" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 80348" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_163.jpg" alt="Ugreen 80348" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 80348">Ugreen 80348</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 80348" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen lp451" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_164.jpg" alt="Ugreen Lp451" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Lp451">Ugreen Lp451</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Lp451" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen vertical dual slot" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_165.jpg" alt="Ugreen Vertical Dual Slot" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Vertical Dual Slot">Ugreen Vertical Dual Slot</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Vertical Dual Slot" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen vertical single" data-category="Laptop Stand Cooler" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_166.jpg" alt="Ugreen Vertical Single" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Vertical Single">Ugreen Vertical Single</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Vertical Single" data-cat="Laptop Stand Cooler" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="asus cobble m2 enclosure" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_167.jpg" alt="Asus Cobble M2 Enclosure" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Asus Cobble M2 Enclosure">Asus Cobble M2 Enclosure</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Asus Cobble M2 Enclosure" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hagibis 2230 mc13" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_168.jpg" alt="Hagibis 2230 Mc13" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hagibis 2230 Mc13">Hagibis 2230 Mc13</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hagibis 2230 Mc13" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hagibis 2230 mc16" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_169.jpg" alt="Hagibis 2230 Mc16" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hagibis 2230 Mc16">Hagibis 2230 Mc16</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hagibis 2230 Mc16" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hagibis magnetic 2230" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_170.jpg" alt="Hagibis Magnetic 2230" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hagibis Magnetic 2230">Hagibis Magnetic 2230</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hagibis Magnetic 2230" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="hagibis write protection m2" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_171.jpg" alt="Hagibis Write Protection M2" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Hagibis Write Protection M2">Hagibis Write Protection M2</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Hagibis Write Protection M2" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="rog arion m2 enclosure" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_172.jpg" alt="Rog Arion M2 Enclosure" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Rog Arion M2 Enclosure">Rog Arion M2 Enclosure</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Rog Arion M2 Enclosure" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="tuf a1" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_173.jpg" alt="Tuf A1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Tuf A1">Tuf A1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Tuf A1" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 30848" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_174.jpg" alt="Ugreen 30848" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 30848">Ugreen 30848</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 30848" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60735" data-category="M2 Enclosure" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_175.jpg" alt="Ugreen 60735" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60735">Ugreen 60735</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60735" data-cat="M2 Enclosure" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech ac902" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_176.jpg" alt="Fantech Ac902" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Ac902">Fantech Ac902</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Ac902" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech leviosa lightning mic" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_177.jpg" alt="Fantech Leviosa Lightning Mic" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Leviosa Lightning Mic">Fantech Leviosa Lightning Mic</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Leviosa Lightning Mic" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech leviosa max" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_178.jpg" alt="Fantech Leviosa Max" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Leviosa Max">Fantech Leviosa Max</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Leviosa Max" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech leviosa usb c mic" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_179.jpg" alt="Fantech Leviosa Usb C Mic" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Leviosa Usb C Mic">Fantech Leviosa Usb C Mic</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Leviosa Usb C Mic" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="gm200" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_180.jpg" alt="Gm200" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Gm200">Gm200</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Gm200" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mv 01" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_181.jpg" alt="Mv 01" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mv 01">Mv 01</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mv 01" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon gm89" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_182.jpg" alt="Reddragon Gm89" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon Gm89">Reddragon Gm89</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon Gm89" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon gm99" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_183.jpg" alt="Reddragon Gm99" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon Gm99">Reddragon Gm99</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon Gm99" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90416" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_184.jpg" alt="Ugreen 90416" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90416">Ugreen 90416</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90416" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen ugreen usb mic" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_185.jpg" alt="Ugreen Ugreen Usb Mic" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Ugreen Usb Mic">Ugreen Ugreen Usb Mic</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Ugreen Usb Mic" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen usb desktop microphone" data-category="Microphone" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_186.jpg" alt="Ugreen Usb Desktop Microphone" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Usb Desktop Microphone">Ugreen Usb Desktop Microphone</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Usb Desktop Microphone" data-cat="Microphone" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="double monitor mount" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_187.jpg" alt="Double Monitor Mount" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Double Monitor Mount">Double Monitor Mount</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Double Monitor Mount" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb f150" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_188.jpg" alt="Nb F150" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb F150">Nb F150</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb F150" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb f160" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_189.jpg" alt="Nb F160" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb F160">Nb F160</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb F160" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb f80+fp 2" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_190.jpg" alt="Nb F80+Fp 2" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb F80+Fp 2">Nb F80+Fp 2</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb F80+Fp 2" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb f80" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_191.jpg" alt="Nb F80" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb F80">Nb F80</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb F80" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb fp 2 laptop bracket" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_192.jpg" alt="Nb Fp 2 Laptop Bracket" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb Fp 2 Laptop Bracket">Nb Fp 2 Laptop Bracket</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb Fp 2 Laptop Bracket" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb g40 silver" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_193.jpg" alt="Nb G40 Silver" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb G40 Silver">Nb G40 Silver</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb G40 Silver" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb g40" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_194.jpg" alt="Nb G40" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb G40">Nb G40</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb G40" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="nb h180" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_195.jpg" alt="Nb H180" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Nb H180">Nb H180</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Nb H180" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="vesa adapter" data-category="Monitor Mount" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_196.jpg" alt="Vesa Adapter" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Vesa Adapter">Vesa Adapter</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Vesa Adapter" data-cat="Monitor Mount" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="aula f810" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_197.jpg" alt="Aula F810" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Aula F810">Aula F810</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Aula F810" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="aula sc590 pro" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_198.jpg" alt="Aula Sc590 Pro" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Aula Sc590 Pro">Aula Sc590 Pro</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Aula Sc590 Pro" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech w190" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_199.jpg" alt="Fantech W190" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech W190">Fantech W190</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech W190" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech w603 go wireless" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_200.jpg" alt="Fantech W603 Go Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech W603 Go Wireless">Fantech W603 Go Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech W603 Go Wireless" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wg10" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_201.jpg" alt="Fantech Wg10" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wg10">Fantech Wg10</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wg10" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wg12r" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_202.jpg" alt="Fantech Wg12R" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wg12R">Fantech Wg12R</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wg12R" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wgc2 mint" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_203.jpg" alt="Fantech Wgc2 Mint" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wgc2 Mint">Fantech Wgc2 Mint</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wgc2 Mint" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wgc2+" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_204.jpg" alt="Fantech Wgc2+" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wgc2+">Fantech Wgc2+</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wgc2+" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech wgc5 bk wh" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_205.jpg" alt="Fantech Wgc5 Bk Wh" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Wgc5 Bk Wh">Fantech Wgc5 Bk Wh</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Wgc5 Bk Wh" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech x17 black" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_206.jpg" alt="Fantech X17 Black" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech X17 Black">Fantech X17 Black</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech X17 Black" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech x17 white" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_207.jpg" alt="Fantech X17 White" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech X17 White">Fantech X17 White</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech X17 White" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="logitech g102" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_208.jpg" alt="Logitech G102" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Logitech G102">Logitech G102</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Logitech G102" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="logitech g304" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_209.jpg" alt="Logitech G304" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Logitech G304">Logitech G304</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Logitech G304" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo fit lite g1" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_210.jpg" alt="Marvo Fit Lite G1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Fit Lite G1">Marvo Fit Lite G1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Fit Lite G1" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo fit pro wireless" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_211.jpg" alt="Marvo Fit Pro Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo Fit Pro Wireless">Marvo Fit Pro Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo Fit Pro Wireless" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo g803w w" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_212.jpg" alt="Marvo G803W W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo G803W W">Marvo G803W W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo G803W W" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="marvo m803w" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_213.jpg" alt="Marvo M803W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Marvo M803W">Marvo M803W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Marvo M803W" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="razer cobra wired" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_214.jpg" alt="Razer Cobra Wired" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Razer Cobra Wired">Razer Cobra Wired</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Razer Cobra Wired" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon g49" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_215.jpg" alt="Reddragon G49" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon G49">Reddragon G49</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon G49" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon g57 wireless" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_216.jpg" alt="Reddragon G57 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon G57 Wireless">Reddragon G57 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon G57 Wireless" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon g57" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_217.jpg" alt="Reddragon G57" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon G57">Reddragon G57</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon G57" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon g62 wireless" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_218.jpg" alt="Reddragon G62 Wireless" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon G62 Wireless">Reddragon G62 Wireless</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon G62 Wireless" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m602 ks" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_219.jpg" alt="Reddragon M602 Ks" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M602 Ks">Reddragon M602 Ks</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M602 Ks" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m711" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_220.jpg" alt="Reddragon M711" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M711">Reddragon M711</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M711" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m711w" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_221.jpg" alt="Reddragon M711W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M711W">Reddragon M711W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M711W" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m808 pro black" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_222.jpg" alt="Reddragon M808 Pro Black" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M808 Pro Black">Reddragon M808 Pro Black</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M808 Pro Black" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m808 pro white" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_223.jpg" alt="Reddragon M808 Pro White" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M808 Pro White">Reddragon M808 Pro White</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M808 Pro White" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m808" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_224.jpg" alt="Reddragon M808" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M808">Reddragon M808</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M808" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon m808w" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_225.jpg" alt="Reddragon M808W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon M808W">Reddragon M808W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon M808W" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon mouse bungee" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_226.jpg" alt="Reddragon Mouse Bungee" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon Mouse Bungee">Reddragon Mouse Bungee</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon Mouse Bungee" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25444 vertical mouse" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_227.jpg" alt="Ugreen 25444 Vertical Mouse" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25444 Vertical Mouse">Ugreen 25444 Vertical Mouse</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25444 Vertical Mouse" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen mu001 bt" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_228.jpg" alt="Ugreen Mu001 Bt" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Mu001 Bt">Ugreen Mu001 Bt</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Mu001 Bt" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen mu006" data-category="Mouse" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_229.jpg" alt="Ugreen Mu006" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Mu006">Ugreen Mu006</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Mu006" data-cat="Mouse" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp25" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_230.jpg" alt="Fantech Mp25" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp25">Fantech Mp25</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp25" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp256" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_231.jpg" alt="Fantech Mp256" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp256">Fantech Mp256</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp256" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp35 sakura" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_232.jpg" alt="Fantech Mp35 Sakura" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp35 Sakura">Fantech Mp35 Sakura</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp35 Sakura" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp35" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_233.jpg" alt="Fantech Mp35" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp35">Fantech Mp35</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp35" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp453" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_234.jpg" alt="Fantech Mp453" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp453">Fantech Mp453</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp453" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp456" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_235.jpg" alt="Fantech Mp456" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp456">Fantech Mp456</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp456" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp64" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_236.jpg" alt="Fantech Mp64" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp64">Fantech Mp64</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp64" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp806" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_237.jpg" alt="Fantech Mp806" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp806">Fantech Mp806</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp806" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp903 grey" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_238.jpg" alt="Fantech Mp903 Grey" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp903 Grey">Fantech Mp903 Grey</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp903 Grey" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="fantech mp905 sakura" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_239.jpg" alt="Fantech Mp905 Sakura" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Fantech Mp905 Sakura">Fantech Mp905 Sakura</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Fantech Mp905 Sakura" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="flick 3xl" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_240.jpg" alt="Flick 3Xl" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Flick 3Xl">Flick 3Xl</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Flick 3Xl" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="gms x10" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_241.jpg" alt="Gms X10" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Gms X10">Gms X10</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Gms X10" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mg011" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_242.jpg" alt="Mg011" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mg011">Mg011</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mg011" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mp80" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_243.jpg" alt="Mp80" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mp80">Mp80</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mp80" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mp902" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_244.jpg" alt="Mp902" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mp902">Mp902</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mp902" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mp903" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_245.jpg" alt="Mp903" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mp903">Mp903</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mp903" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mp904 mint" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_246.jpg" alt="Mp904 Mint" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mp904 Mint">Mp904 Mint</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mp904 Mint" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mp905" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_247.jpg" alt="Mp905" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mp905">Mp905</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mp905" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mpr351" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_248.jpg" alt="Mpr351" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mpr351">Mpr351</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mpr351" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="mpr800s" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_249.jpg" alt="Mpr800S" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Mpr800S">Mpr800S</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Mpr800S" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon p011" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_250.jpg" alt="Reddragon P011" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon P011">Reddragon P011</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon P011" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="reddragon p033 rgb" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_251.jpg" alt="Reddragon P033 Rgb" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Reddragon P033 Rgb">Reddragon P033 Rgb</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Reddragon P033 Rgb" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="tuf p1" data-category="Mousepad" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_252.jpg" alt="Tuf P1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Tuf P1">Tuf P1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Tuf P1" data-cat="Mousepad" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="arzopa 14 a1s " data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_253.jpg" alt="Arzopa 14 A1S " loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Arzopa 14 A1S ">Arzopa 14 A1S </div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Arzopa 14 A1S " data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="arzopa 16.1 144hz g1 game max" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_254.jpg" alt="Arzopa 16.1 144Hz G1 Game Max" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Arzopa 16.1 144Hz G1 Game Max">Arzopa 16.1 144Hz G1 Game Max</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Arzopa 16.1 144Hz G1 Game Max" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="arzopa a1 15.6" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_255.jpg" alt="Arzopa A1 15.6" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Arzopa A1 15.6">Arzopa A1 15.6</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Arzopa A1 15.6" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="arzopa a5s oled" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_256.jpg" alt="Arzopa A5S Oled" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Arzopa A5S Oled">Arzopa A5S Oled</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Arzopa A5S Oled" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="arzopa z1fc 16.1 144hz" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_257.jpg" alt="Arzopa Z1Fc 16.1 144Hz" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Arzopa Z1Fc 16.1 144Hz">Arzopa Z1Fc 16.1 144Hz</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Arzopa Z1Fc 16.1 144Hz" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="arzopa z1rc 16.1" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_258.jpg" alt="Arzopa Z1Rc 16.1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Arzopa Z1Rc 16.1">Arzopa Z1Rc 16.1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Arzopa Z1Rc 16.1" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="arzopa z3fc 16.1" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_259.jpg" alt="Arzopa Z3Fc 16.1" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Arzopa Z3Fc 16.1">Arzopa Z3Fc 16.1</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Arzopa Z3Fc 16.1" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="boltsnake 2k" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_260.jpg" alt="Boltsnake 2K" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Boltsnake 2K">Boltsnake 2K</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Boltsnake 2K" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="intehill f13na oled" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_261.jpg" alt="Intehill F13Na Oled" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Intehill F13Na Oled">Intehill F13Na Oled</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Intehill F13Na Oled" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="intehill oled q14zt" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_262.jpg" alt="Intehill Oled Q14Zt" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Intehill Oled Q14Zt">Intehill Oled Q14Zt</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Intehill Oled Q14Zt" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="intehill t16kb" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_263.jpg" alt="Intehill T16Kb" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Intehill T16Kb">Intehill T16Kb</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Intehill T16Kb" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="intehill t16pb" data-category="Portable Monitor" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_264.jpg" alt="Intehill T16Pb" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Intehill T16Pb">Intehill T16Pb</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Intehill T16Pb" data-cat="Portable Monitor" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="baseus 30000mah" data-category="Powerbank" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_265.jpg" alt="Baseus 30000Mah" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Baseus 30000Mah">Baseus 30000Mah</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Baseus 30000Mah" data-cat="Powerbank" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25683 powerbank" data-category="Powerbank" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_266.jpg" alt="Ugreen 25683 Powerbank" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25683 Powerbank">Ugreen 25683 Powerbank</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25683 Powerbank" data-cat="Powerbank" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25742 powerbank" data-category="Powerbank" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_267.jpg" alt="Ugreen 25742 Powerbank" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25742 Powerbank">Ugreen 25742 Powerbank</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25742 Powerbank" data-cat="Powerbank" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 35525b" data-category="Powerbank" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_268.jpg" alt="Ugreen 35525B" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 35525B">Ugreen 35525B</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 35525B" data-cat="Powerbank" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 35526b powerbank" data-category="Powerbank" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_269.jpg" alt="Ugreen 35526B Powerbank" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 35526B Powerbank">Ugreen 35526B Powerbank</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 35526B Powerbank" data-cat="Powerbank" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 35603b powerbank" data-category="Powerbank" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_270.jpg" alt="Ugreen 35603B Powerbank" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 35603B Powerbank">Ugreen 35603B Powerbank</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 35603B Powerbank" data-cat="Powerbank" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90597a powerbank" data-category="Powerbank" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_271.jpg" alt="Ugreen 90597A Powerbank" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90597A Powerbank">Ugreen 90597A Powerbank</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90597A Powerbank" data-cat="Powerbank" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="jsaux ally x silicone case" data-category="Rog Ally X Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_272.jpg" alt="Jsaux Ally X Silicone Case" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Jsaux Ally X Silicone Case">Jsaux Ally X Silicone Case</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Jsaux Ally X Silicone Case" data-cat="Rog Ally X Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull & co dock ally x grip case + bag" data-category="Rog Ally X Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_273.jpg" alt="Skull & Co Dock Ally X Grip Case + Bag" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull & Co Dock Ally X Grip Case + Bag">Skull & Co Dock Ally X Grip Case + Bag</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull & Co Dock Ally X Grip Case + Bag" data-cat="Rog Ally X Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="jsaux steam deck screen protector" data-category="Steam Deck Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_274.jpg" alt="Jsaux Steam Deck Screen Protector" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Jsaux Steam Deck Screen Protector">Jsaux Steam Deck Screen Protector</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Jsaux Steam Deck Screen Protector" data-cat="Steam Deck Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull & co steam deck grip case" data-category="Steam Deck Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_275.jpg" alt="Skull & Co Steam Deck Grip Case" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull & Co Steam Deck Grip Case">Skull & Co Steam Deck Grip Case</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull & Co Steam Deck Grip Case" data-cat="Steam Deck Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="steam deck skull co stand grip" data-category="Steam Deck Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_276.jpg" alt="Steam Deck Skull Co Stand Grip" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Steam Deck Skull Co Stand Grip">Steam Deck Skull Co Stand Grip</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Steam Deck Skull Co Stand Grip" data-cat="Steam Deck Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull co switch 2 button cap set" data-category="Switch 2 Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_277.jpg" alt="Skull Co Switch 2 Button Cap Set" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull Co Switch 2 Button Cap Set">Skull Co Switch 2 Button Cap Set</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull Co Switch 2 Button Cap Set" data-cat="Switch 2 Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull co switch 2 grip case" data-category="Switch 2 Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_278.jpg" alt="Skull Co Switch 2 Grip Case" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull Co Switch 2 Grip Case">Skull Co Switch 2 Grip Case</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull Co Switch 2 Grip Case" data-cat="Switch 2 Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull co switch 2 hard shell case" data-category="Switch 2 Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_279.jpg" alt="Skull Co Switch 2 Hard Shell Case" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull Co Switch 2 Hard Shell Case">Skull Co Switch 2 Hard Shell Case</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull Co Switch 2 Hard Shell Case" data-cat="Switch 2 Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull co switch 2 neogrip bundle maxcarry case" data-category="Switch 2 Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_280.jpg" alt="Skull Co Switch 2 Neogrip Bundle Maxcarry Case" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull Co Switch 2 Neogrip Bundle Maxcarry Case">Skull Co Switch 2 Neogrip Bundle Maxcarry Case</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull Co Switch 2 Neogrip Bundle Maxcarry Case" data-cat="Switch 2 Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull co switch 2 neogrip" data-category="Switch 2 Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_281.jpg" alt="Skull Co Switch 2 Neogrip" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull Co Switch 2 Neogrip">Skull Co Switch 2 Neogrip</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull Co Switch 2 Neogrip" data-cat="Switch 2 Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="skull co switch 2 stand grip bundle" data-category="Switch 2 Accessories" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_282.jpg" alt="Skull Co Switch 2 Stand Grip Bundle" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Skull Co Switch 2 Stand Grip Bundle">Skull Co Switch 2 Stand Grip Bundle</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Skull Co Switch 2 Stand Grip Bundle" data-cat="Switch 2 Accessories" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="jsaux 65w charger" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_283.jpg" alt="Jsaux 65W Charger" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Jsaux 65W Charger">Jsaux 65W Charger</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Jsaux 65W Charger" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="rog charger dock" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_284.jpg" alt="Rog Charger Dock" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Rog Charger Dock">Rog Charger Dock</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Rog Charger Dock" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25870 65w" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_285.jpg" alt="Ugreen 25870 65W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25870 65W">Ugreen 25870 65W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25870 65W" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 25873 100w" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_286.jpg" alt="Ugreen 25873 100W" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 25873 100W">Ugreen 25873 100W</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 25873 100W" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 35025 130w car charger" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_287.jpg" alt="Ugreen 35025 130W Car Charger" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 35025 130W Car Charger">Ugreen 35025 130W Car Charger</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 35025 130W Car Charger" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 60495" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_288.jpg" alt="Ugreen 60495" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 60495">Ugreen 60495</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 60495" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 70773" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_289.jpg" alt="Ugreen 70773" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 70773">Ugreen 70773</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 70773" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90376 100w pd" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_290.jpg" alt="Ugreen 90376 100W Pd" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90376 100W Pd">Ugreen 90376 100W Pd</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90376 100W Pd" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90572 45w pd" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_291.jpg" alt="Ugreen 90572 45W Pd" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90572 45W Pd">Ugreen 90572 45W Pd</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90572 45W Pd" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90902 20w pd" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_292.jpg" alt="Ugreen 90902 20W Pd" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90902 20W Pd">Ugreen 90902 20W Pd</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90902 20W Pd" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen uno 65w charger" data-category="Usb A C Charger" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_293.jpg" alt="Ugreen Uno 65W Charger" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Uno 65W Charger">Ugreen Uno 65W Charger</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Uno 65W Charger" data-cat="Usb A C Charger" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="tplink tl wn725n" data-category="Usb Wifi + Bluetooth" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_294.jpg" alt="Tplink Tl Wn725N" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Tplink Tl Wn725N">Tplink Tl Wn725N</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Tplink Tl Wn725N" data-cat="Usb Wifi + Bluetooth" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 90340 wifi 6 usb" data-category="Usb Wifi + Bluetooth" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_295.jpg" alt="Ugreen 90340 Wifi 6 Usb" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 90340 Wifi 6 Usb">Ugreen 90340 Wifi 6 Usb</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 90340 Wifi 6 Usb" data-cat="Usb Wifi + Bluetooth" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen ac650b" data-category="Usb Wifi + Bluetooth" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_296.jpg" alt="Ugreen Ac650B" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Ac650B">Ugreen Ac650B</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Ac650B" data-cat="Usb Wifi + Bluetooth" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen bluetooth 5.4" data-category="Usb Wifi + Bluetooth" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_297.jpg" alt="Ugreen Bluetooth 5.4" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen Bluetooth 5.4">Ugreen Bluetooth 5.4</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen Bluetooth 5.4" data-cat="Usb Wifi + Bluetooth" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ult ax900 wifi bt" data-category="Usb Wifi + Bluetooth" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_298.jpg" alt="Ult Ax900 Wifi Bt" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ult Ax900 Wifi Bt">Ult Ax900 Wifi Bt</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ult Ax900 Wifi Bt" data-cat="Usb Wifi + Bluetooth" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ult bt 5.3" data-category="Usb Wifi + Bluetooth" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_299.jpg" alt="Ult Bt 5.3" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ult Bt 5.3">Ult Bt 5.3</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ult Bt 5.3" data-cat="Usb Wifi + Bluetooth" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+        <div class="card" data-title="ugreen 2k 1440p webcam" data-category="Webcam" onclick="toggleCardSelection(this, event)">
+            <div class="cover-wrapper">
+                <img src="images/poster_300.jpg" alt="Ugreen 2K 1440P Webcam" loading="lazy">
+            </div>
+            <div class="info-panel">
+                <div class="title" title="Ugreen 2K 1440P Webcam">Ugreen 2K 1440P Webcam</div>
+                <input type="checkbox" class="card-checkbox" data-rawtitle="Ugreen 2K 1440P Webcam" data-cat="Webcam" data-subcat="All" onchange="updateSelectionCount()">
+            </div>
+        </div>
+    </div>
+
+    <div class="selection-bar">
+        <div class="selection-info">
+            Selected Posters: <span id="selectedCount" style="color:var(--accent-green)">0</span>
+        </div>
+        <button class="send-btn" id="submitBtn" onclick="sendOrderToTelegram()">Send Order</button>
+    </div>
+
+    <script>
+        const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE";
+        const ADMIN_CHAT_ID = "123456789";
+        const MAX_DAILY_ORDERS = 3;
+        let activeCategory = "ALL";
+
+        const tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
+
+        function getOrderTracker() {
+            const today = new Date().toISOString().split('T')[0];
+            const saved = localStorage.getItem('poster_order_tracker');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.date === today) return data;
+            }
+            return { date: today, count: 0 };
+        }
+
+        function incrementOrderCount() {
+            const tracker = getOrderTracker();
+            tracker.count += 1;
+            localStorage.setItem('poster_order_tracker', JSON.stringify(tracker));
+            return tracker.count;
+        }
+
+        function filterCategory(cat, btn) {
+            activeCategory = cat;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterPosters();
+        }
+
+        function filterPosters() {
+            const query = document.getElementById('search').value.toLowerCase();
+
+            document.querySelectorAll('.card').forEach(card => {
+                const titleMatch = card.getAttribute('data-title').includes(query);
+                const categoryMatch = (activeCategory === "ALL") || (card.getAttribute('data-category') === activeCategory);
+
+                card.style.display = (titleMatch && categoryMatch) ? "flex" : "none";
+            });
+        }
+
+        function toggleCardSelection(card, event) {
+            if (event.target.tagName !== 'INPUT') {
+                const cb = card.querySelector('.card-checkbox');
+                cb.checked = !cb.checked;
+            }
+            card.classList.toggle('selected', card.querySelector('.card-checkbox').checked);
+            updateSelectionCount();
+        }
+
+        function updateSelectionCount() {
+            const checkboxes = document.querySelectorAll('.card-checkbox:checked');
+            document.getElementById('selectedCount').innerText = checkboxes.length;
+        }
+
+        async function sendOrderToTelegram() {
+            const tracker = getOrderTracker();
+            if (tracker.count >= MAX_DAILY_ORDERS) {
+                alert("⚠️ Daily order limit reached! You can only submit 3 orders per day per device.");
+                return;
+            }
+
+            const checkboxes = document.querySelectorAll('.card-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert("Please select at least one poster.");
+                return;
+            }
+
+            const selectedPosters = Array.from(checkboxes).map(cb => {
+                const name = cb.getAttribute('data-rawtitle');
+                const cat = cb.getAttribute('data-cat');
+                const subcat = cb.getAttribute('data-subcat');
+                return `${name} [${cat} / ${subcat}]`;
+            });
+
+            const user = tg?.initDataUnsafe?.user;
+            let customerName = user ? `${user.first_name || ''} ${user.last_name || ''}`.trim() : '';
+
+            if (!customerName) customerName = prompt("Please enter your name for the order:", "");
+            if (!customerName) return alert("Name is required.");
+
+            const username = user?.username ? `@${user.username}` : 'N/A';
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            const message = `🖼️ <b>NEW POSTER ORDER!</b>\n\n` +
+                `👤 <b>Customer:</b> ${customerName}\n` +
+                `💬 <b>Telegram User:</b> ${username}\n` +
+                `📦 <b>Total Posters:</b> ${selectedPosters.length}\n\n` +
+                `📌 <b>Posters Selected:</b>\n` + selectedPosters.map(p => `• ${p}`).join('\n');
+
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: ADMIN_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                if (res.ok) {
+                    const newCount = incrementOrderCount();
+                    const remaining = MAX_DAILY_ORDERS - newCount;
+                    alert(`✅ Order placed! You have ${remaining} order(s) left today.`);
+                    if (tg) tg.close();
+                } else {
+                    alert("❌ Failed to send order. Check your Bot Token and Chat ID.");
+                }
+            } catch (e) {
+                alert("Error sending order: " + e.message);
+            } finally {
+                btn.innerText = "Send Order";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
